@@ -1,13 +1,15 @@
 import cv2
 import os
 
-
+# import tensorflow as tf
+# print(tf.config.list_physical_devices('GPU'))
+# print(tf.__version__)
 # получаем путь к этому скрипту
 path = os.path.dirname(os.path.abspath(__file__))
 # создаём новый распознаватель лиц
 recognizer = cv2.face.LBPHFaceRecognizer_create()
 # добавляем в него модель, которую мы обучили на прошлых этапах
-recognizer.read(path+r'/trainer/trainer1.yml')
+recognizer.read("my_model.yml")
 # указываем, что мы будем искать лица по примитивам Хаара
 faceCascade = cv2.CascadeClassifier(cv2.data.haarcascades + "haarcascade_frontalface_default.xml")
 
@@ -31,7 +33,8 @@ while True:
         # рисуем прямоугольник вокруг лица
         cv2.rectangle(im,(x-50,y-50),(x+w+50,y+h+50),(225,0,0),2)
         # если мы знаем id пользователя
-        if (nbr_predicted == 1):
+        print(nbr_predicted)
+        if (nbr_predicted == 1 or nbr_predicted == 5):
              # подставляем вместо него имя человека
              nbr_predicted='Ivan'
         if (nbr_predicted == 2):

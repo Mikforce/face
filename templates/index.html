@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Распознавание лица</title>
+    <style>
+        body {
+            background-color: #f0f0f0; /* Set the background color */
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Center-align content horizontally */
+            justify-content: center; /* Center-align content vertically */
+            height: 100vh; /* Make the body take the full viewport height */
+            margin: 0;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        #video_feed {
+            width: 640px;
+            height: 480px;
+            margin: 10px;
+            border: 2px solid #333; /* Add a border to the video feed */
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #007bff; /* Set button background color */
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        a {
+            text-decoration: none;
+            color: #007bff; /* Set link color */
+        }
+
+        button:hover {
+            background-color: #0056b3; /* Change button color on hover */
+        }
+    </style>
+</head>
+<body>
+    <h1>Распознавание лица</h1>
+    <div id="video_feed_container">
+        <!-- Video feed will be loaded here -->
+    </div>
+
+    <button onclick="redirectToCaptureUser()">Добавить пользователя</button>
+
+    <script>
+        // Function to redirect to capture_user route
+        function redirectToCaptureUser() {
+            window.location.href = "{{ url_for('capture_user') }}";
+        }
+
+        // Function to refresh the video feed
+        function refreshVideoFeed() {
+            // Remove the existing video feed element
+            const videoContainer = document.getElementById('video_feed_container');
+            const existingVideo = document.getElementById('video_feed');
+            if (existingVideo) {
+                videoContainer.removeChild(existingVideo);
+            }
+
+            // Create a new video feed element and append it to the container
+            const videoElement = document.createElement('img');
+            videoElement.id = 'video_feed';
+            videoElement.src = "{{ url_for('video_feed') }}";
+            videoElement.autoplay = true;
+            videoContainer.appendChild(videoElement);
+        }
+
+        // Refresh the video feed every 5 seconds
+        setInterval(refreshVideoFeed, 5000);
+
+        // Initial load of the video feed
+        refreshVideoFeed();
+    </script>
+
+    <br>
+
+</body>
+</html>

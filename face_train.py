@@ -65,15 +65,10 @@ import numpy as np
 import cv2
 import sqlite3
 
-
 path = os.path.dirname(os.path.abspath(__file__))
-
 recognizer = cv2.face.LBPHFaceRecognizer_create()
-
 faceCascade = cv2.CascadeClassifier(cv2.data.haarcascades + "haarcascade_frontalface_default.xml")
-
 databasePath = path + '/faces.db'
-
 # получаем картинки и подписи из базы данных
 def get_images_and_labels(databasePath):
     # подключаемся к базе данных
@@ -85,14 +80,6 @@ def get_images_and_labels(databasePath):
     # списки картинок и подписей на старте пустые
     images = []
     labels = []
-    # for record in rows:
-    #     # convert image data from bytes to numpy array
-    #     img = np.frombuffer(record[2], np.uint8)
-    #     img = cv2.imdecode(img, cv2.IMREAD_GRAYSCALE)
-    #     images.append(img)
-    #     labels.append(record[1])
-    # перебира��м все записи в таблице
-
     for row in rows:
         # получаем имя и фото пользователя
         name = row[1]
@@ -117,25 +104,15 @@ def get_images_and_labels(databasePath):
     # возвращаем список картинок и подписей
     return images, labels
 
-# # получаем список картинок и подписей
-# images, labels = get_images_and_labels(databasePath)
-# labels = "".join(labels)
-# labels = int(labels)
-# print(labels)
-# # обучаем модель распознавания на наших картинках и учим сопоставлять её лица и подписи к ним
-# recognizer.train(images, np.array(labels))
-# # сохраняем модель
-# recognizer.save(path+r'/trainer/trainer1.yml')
-# # удаляем из памяти все созданные окнаы
-# cv2.destroyAllWindows()
 images, labels = get_images_and_labels(databasePath)
-
+# import tensorflow as tf
+# print(tf.test.is_built_with_cuda())
 # convert all labels to integers
 labels = [int(label) for label in labels]
 print(labels)
 # train the recognizer on the images and labels
 recognizer.train(images, np.array(labels))
 # save the model
-recognizer.save(path + '/trainer/trainer1.yml')
+recognizer.write('my_model.yml')
 # destroy all windows
 cv2.destroyAllWindows()
